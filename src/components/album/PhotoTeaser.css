@@ -1,0 +1,37 @@
+.photo-teaser-story {
+    position: relative;
+    isolation: isolate;
+}
+
+/* Hold the last photo for one more viewport while the video rises over it. */
+.photo-teaser-story .album-photo {
+    height: calc(200svh + var(--album-scroll-distance));
+}
+
+.photo-teaser-story .teaser {
+    z-index: 2;
+    margin-top: -100svh;
+}
+
+.photo-teaser-story .album-photo__stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: #000;
+    opacity: var(--album-teaser-dim, 0);
+    pointer-events: none;
+}
+
+.photo-teaser-story .album-photo--reduced {
+    height: auto;
+}
+
+.photo-teaser-story:has(.album-photo--reduced) .teaser {
+    margin-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photo-teaser-story .album-photo { height: auto; }
+    .photo-teaser-story .teaser { margin-top: 0; }
+}

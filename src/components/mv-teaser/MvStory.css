@@ -1,0 +1,22 @@
+.mv-story { position: relative; height: 300svh; background: #013db9; --mv-video-reveal: 0; --mv-surroundings: 1; }
+.mv-story__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; }
+.mv-story__stage > .mv-text { position: absolute; top: 50%; transform: translateY(-50%); overflow: visible; }
+.mv-story .mv-text__photo--2 { z-index: 2; object-fit: fill; }
+.mv-story .mv-text__phrase,
+.mv-story .mv-text__artist,
+.mv-story .mv-text__logo,
+.mv-story .mv-text__photo--1,
+.mv-story .mv-text__photo--3 { opacity: var(--mv-surroundings); }
+.mv-story__video { position: absolute; z-index: 3; overflow: hidden; opacity: var(--mv-video-reveal); visibility: hidden; }
+.mv-story__video--visible { visibility: visible; }
+.mv-story__video .mv-teaser,
+.mv-story__video .teaser__stage { width: 100%; height: 100%; aspect-ratio: auto; }
+.mv-story__video { pointer-events: none; }
+.mv-story__video .teaser__controls { pointer-events: auto; }
+.mv-story--reduced { height: auto; }
+.mv-story--reduced .mv-story__stage { position: relative; height: auto; overflow: visible; }
+.mv-story--reduced .mv-story__stage > .mv-text { position: relative; top: auto; transform: none; }
+.mv-story--reduced .mv-story__video { position: relative; opacity: 1; }
+.mv-story--reduced .mv-text > * { opacity: 1; }
+.mv-story--reduced .mv-teaser,
+.mv-story--reduced .teaser__stage { height: auto; aspect-ratio: 1572 / 1080; }

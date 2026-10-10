@@ -1,0 +1,9 @@
+.top-button { position: fixed; right: clamp(18px, 2vw, 40px); bottom: 28px; z-index: 1000; width: 50px; height: 120px; transform: scale(.8); transform-origin: right bottom; padding: 0; border: 0; border-radius: 70px; background: #fff; color: #013db9; cursor: pointer; box-shadow: 0 3px 18px rgb(0 22 69 / 12%); transition: background .2s, color .2s; }
+.top-button:hover, .top-button:focus-visible { background: #001645; color: #fff; }
+.top-button:focus-visible { outline: 2px solid #013db9; outline-offset: 4px; }
+.top-button__arrow { position: absolute; left: 19px; top: 16px; width: 12.571px; height: 22px; }
+.top-button__arrow img { position: absolute; left: 0; top: 0; max-width: none; }
+.top-button__arrow--white { opacity: 0; }
+.top-button:hover .top-button__arrow--white, .top-button:focus-visible .top-button__arrow--white { opacity: 1; }
+.top-button:hover .top-button__arrow--blue, .top-button:focus-visible .top-button__arrow--blue { opacity: 0; }
+.top-button__text { position: absolute; top: 46px; left: 0; width: 100%; text-align: center; font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 600; line-height: 1.2; }

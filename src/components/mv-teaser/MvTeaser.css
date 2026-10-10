@@ -1,0 +1,10 @@
+.teaser.mv-teaser {
+    height: auto;
+    aspect-ratio: 1572 / 1080;
+}
+
+.mv-teaser .teaser__stage {
+    position: relative;
+    height: auto;
+    aspect-ratio: 1572 / 1080;
+}

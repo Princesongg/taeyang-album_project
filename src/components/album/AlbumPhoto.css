@@ -1,0 +1,151 @@
+.album-photo {
+    --album-scroll-distance: 350svh;
+    --album-gallery-start: 110vw;
+    position: relative;
+    height: calc(100svh + var(--album-scroll-distance));
+    background: #fff;
+}
+
+.album-photo__stage {
+    --album-cover-opacity: 1;
+    --album-spread: 1;
+    --album-photo-opacity: 1;
+    --album-shift: 0px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.album-photo__world {
+    position: absolute;
+    inset: 0;
+    transform: translate3d(var(--album-shift), 0, 0);
+    will-change: transform;
+}
+
+.album-photo__canvas {
+    z-index: 2;
+    position: absolute;
+    width: min(100%, 160svh);
+    aspect-ratio: 1920 / 1200;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.album-photo__scatter {
+    position: absolute;
+    inset: 0;
+    transform: scale(var(--album-spread));
+    opacity: var(--album-photo-opacity);
+    will-change: transform, opacity;
+}
+
+.album-photo__snapshot { position: absolute; }
+.album-photo__scatter--front { z-index: 2; pointer-events: none; }
+.album-photo__cover {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 36.875%;
+    height: 67%;
+    transform: translate(-50%, -50%);
+    opacity: var(--album-cover-opacity);
+    z-index: 1;
+    will-change: opacity;
+}
+
+.album-photo__lead {
+    position: absolute;
+    z-index: 3;
+    margin: 0;
+    left: var(--album-lead-x, 72.8%);
+    top: var(--album-lead-y, 29.4%);
+    width: var(--album-lead-width, 20.4%);
+    height: var(--album-lead-height, 40.8%);
+    transform: translate(-50%, -50%) rotate(var(--album-lead-angle, 6.1deg));
+}
+
+.album-photo img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    user-select: none;
+}
+
+/* Keep faces near the top of portrait photos visible in wide gallery panels. */
+.album-photo__panel img,
+.album-photo__lead img {
+    object-position: center top;
+}
+
+.album-photo__panel--3 img {
+    object-fit: cover;
+    object-position: center 62.5%;
+}
+
+.album-photo__panel--1 img {
+    object-position: center 34%;
+}
+
+.album-photo__panel--5 img {
+    object-position: center 14%;
+}
+
+.album-photo__lead img,
+.album-photo__panel--6 img {
+    object-fit: cover;
+    object-position: center 54%;
+}
+
+.album-photo__lead,
+.album-photo__panel--6 {
+    background: #f4f3f1;
+}
+
+.album-photo__panel--3 {
+    background: #d9edf0;
+}
+
+.album-photo__gallery {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+.album-photo__panel:first-child { visibility: hidden; }
+
+.album-photo__panel {
+    position: absolute;
+    margin: 0;
+    left: var(--panel-x, 110%);
+    top: var(--panel-y, 50%);
+    width: var(--panel-width, 80svh);
+    height: var(--panel-height, 100%);
+    transform: translate(-50%, -50%) rotate(var(--panel-angle, 0deg));
+}
+
+.album-photo--reduced { height: auto; }
+.album-photo--reduced .album-photo__lead { display: none; }
+.album-photo--reduced .album-photo__panel:first-child { visibility: visible; }
+.album-photo--reduced .album-photo__gallery { opacity: 1; }
+.album-photo--reduced .album-photo__stage { position: relative; height: auto; overflow: visible; }
+.album-photo--reduced .album-photo__world { position: relative; transform: none; will-change: auto; }
+.album-photo--reduced .album-photo__canvas { position: relative; top: auto; left: auto; transform: none; margin: auto; }
+.album-photo--reduced .album-photo__gallery { position: relative; inset: auto; display: flex; height: auto; overflow-x: auto; scroll-snap-type: x mandatory; }
+.album-photo--reduced .album-photo__panel { position: relative; left: auto; top: auto; transform: none; flex: 0 0 auto; width: min(80vw, 80svh); height: min(100vw, 100svh); scroll-snap-align: start; }
+
+@media (prefers-reduced-motion: reduce) {
+    .album-photo__lead { display: none; }
+    .album-photo__panel:first-child { visibility: visible; }
+    .album-photo__gallery { opacity: 1; }
+    .album-photo { height: auto; }
+    .album-photo__stage { position: relative; height: auto; overflow: visible; }
+    .album-photo__world { position: relative; transform: none; will-change: auto; }
+    .album-photo__canvas { position: relative; top: auto; left: auto; transform: none; margin: auto; }
+    .album-photo__gallery { position: relative; inset: auto; display: flex; height: auto; overflow-x: auto; scroll-snap-type: x mandatory; }
+    .album-photo__panel { position: relative; left: auto; top: auto; transform: none; flex: 0 0 auto; width: min(80vw, 80svh); height: min(100vw, 100svh); scroll-snap-align: start; }
+}

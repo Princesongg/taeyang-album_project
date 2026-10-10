@@ -1,0 +1,11 @@
+.album-footer { position: relative; container-type: inline-size; background: #013db9; color: rgb(255 255 255 / 80%); min-height: 46.875cqw; font-family: 'SUITE', Arial, sans-serif; overflow: hidden; }
+.album-footer p, .album-footer h2 { margin: 0; }
+.album-footer__title { color: #fff; font-family: 'Playfair Display', Georgia, serif; font-size: 17.1875cqw; font-weight: 700; line-height: normal; text-align: center; white-space: nowrap; }
+.album-footer__label { position: absolute; top: 21.09375cqw; left: 72.239583%; font-size: 1.666667cqw; font-weight: 600; }
+.album-footer__information { display: grid; grid-template-columns: 22.135417cqw 0 21.458333cqw; gap: 5.208333cqw; position: absolute; left: 10.677083%; top: 28.072917cqw; }
+.album-footer h2 { font-size: 1.354167cqw; font-weight: 400; margin-bottom: 1.5625cqw; }
+.album-footer__details { display: flex; flex-direction: column; gap: .625cqw; font-size: .9375cqw; font-weight: 400; color: rgb(255 255 255 / 60%); }
+.album-footer__details--cs { font-weight: 300; }
+.album-footer__divider { position: relative; height: 10.9375cqw; }
+.album-footer__divider img { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; transform: rotate(90deg) scale(calc(100vw / 1920px)); }
+@media (max-width: 700px) { .album-footer { min-height: auto; padding-bottom: 48px; } .album-footer__label { position: static; text-align: right; padding-right: 24px; font-size: 14px; } .album-footer__information { position: static; display: grid; grid-template-columns: 1fr; gap: 28px; margin: 36px 24px 0; } .album-footer h2 { font-size: 16px; margin-bottom: 16px; } .album-footer__details { font-size: 12px; gap: 8px; } .album-footer__divider { display: none; } }

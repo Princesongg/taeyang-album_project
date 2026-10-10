@@ -1,0 +1,13 @@
+.closing-text { position: relative; height: 22.916667vw; background: #fff; color: #013db9; }
+.closing-text__stage { position: relative; height: 100%; overflow: hidden; container-type: inline-size; }
+.closing-text__content { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 55.208333cqw; text-align: center; font-family: 'Playfair Display', Georgia, serif; }
+.closing-text h2 { margin: 0; font-size: 2.1875cqw; font-weight: 400; line-height: normal; }
+.closing-text__line { display: block; white-space: nowrap; }
+.closing-text__letter { display: inline-block; white-space: pre; }
+.closing-text__signature { margin: 2.604167cqw 0 0; min-height: 2.5cqw; font-size: 1.25cqw; font-weight: 400; line-height: normal; }
+@media (max-width: 700px) { .closing-text__content { width: calc(100% - 48px); } .closing-text h2 { font-size: 6cqw; height: auto; } .closing-text__signature { font-size: 12px; margin-top: 32px; } }
+@media (prefers-reduced-motion: reduce) { .closing-text { height: 100svh; } .closing-text__stage { position: relative; } }
+
+@media (max-width: 700px) { .closing-text { height: 70vw; min-height: 260px; } }
+
+.closing-text__content { top: 30%; }
