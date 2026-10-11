@@ -29,6 +29,7 @@ export default function TrackList() {
     useEffect(() => {
         const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
         const rows = [...sectionRef.current.querySelectorAll('.tracklist__track')];
+        const artwork = sectionRef.current.querySelector('.tracklist__artwork');
         let cleanup = () => {};
         const setup = () => {
             cleanup();
@@ -38,6 +39,17 @@ export default function TrackList() {
             let busy = false;
             const visible = new Set();
             const animations = [];
+            artwork.style.opacity = '0';
+            const artworkObserver = new IntersectionObserver(entries => {
+                if (!entries.some(entry => entry.isIntersecting)) return;
+                animations.push(artwork.animate([
+                    { opacity: 0, transform: 'translateY(72px)' },
+                    { opacity: 1, transform: 'translateY(0)' },
+                ], { duration: 1100, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' }));
+                artwork.style.opacity = '';
+                artworkObserver.disconnect();
+            }, { threshold: .15 });
+            artworkObserver.observe(artwork);
             rows.forEach(row => row.querySelectorAll('.tracklist__letter, .tracklist__badge').forEach(letter => { letter.style.opacity = '0'; }));
             const advance = async () => {
                 if (stopped || busy || !visible.has(rows[next])) return;
@@ -74,7 +86,9 @@ export default function TrackList() {
             cleanup = () => {
                 stopped = true;
                 observer.disconnect();
+                artworkObserver.disconnect();
                 animations.forEach(animation => animation.cancel());
+                artwork.style.opacity = '';
                 rows.forEach(row => row.querySelectorAll('.tracklist__letter, .tracklist__badge').forEach(letter => { letter.style.opacity = ''; }));
             };
         };

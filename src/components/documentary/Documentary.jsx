@@ -137,14 +137,20 @@ function DocumentaryExplanation() {
 export default function Documentary() {
     const sectionRef = useRef(null);
     useEffect(() => {
-        const cards = [...sectionRef.current.querySelectorAll('.documentary__card')];
-        const stack = sectionRef.current.querySelector('.documentary__cards');
+        const section = sectionRef.current;
+        const cards = [...section.querySelectorAll('.documentary__card')];
+        const stack = section.querySelector('.documentary__cards');
         const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
         let frame = 0;
         const render = () => {
             frame = 0;
             const stackTop = stack.getBoundingClientRect().top;
             const height = window.innerHeight;
+            const clamp = value => Math.max(0, Math.min(1, value));
+            const entrance = clamp((height * .95 - stackTop) / (height * .65));
+            const exit = clamp((stackTop + stack.offsetHeight) / (height * .4));
+            const shade = entrance * entrance * (3 - 2 * entrance) * exit;
+            section.style.setProperty('--documentary-card-dim', preference.matches ? 0 : shade * .22);
             cards.forEach(card => {
                 if (preference.matches) { card.style.transform = ''; return; }
                 // Measure the unchanged layout position so the transform cannot feed back into itself.
@@ -161,6 +167,7 @@ export default function Documentary() {
         preference.addEventListener('change', update);
         return () => {
             cancelAnimationFrame(frame);
+            section.style.removeProperty('--documentary-card-dim');
             window.removeEventListener('scroll', update);
             window.removeEventListener('resize', update);
             preference.removeEventListener('change', update);

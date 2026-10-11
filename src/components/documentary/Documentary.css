@@ -1,6 +1,6 @@
 .documentary { position: relative; z-index: 1; margin-top: -100svh; background: #013db9; color: #fff; isolation: isolate; }
 .documentary__background { position: sticky; top: 0; height: 100svh; overflow: hidden; container-type: inline-size; z-index: -1; }
-.documentary__background::after { content: ''; position: absolute; inset: 0; background: #000; opacity: var(--documentary-dim, 0); pointer-events: none; will-change: opacity; }
+.documentary__background::after { content: ''; position: absolute; inset: 0; background: #000; opacity: max(var(--documentary-dim, 0), var(--documentary-card-dim, 0)); pointer-events: none; will-change: opacity; }
 .documentary__stars { position: absolute; inset: 0; pointer-events: none; }
 .documentary__star { position: absolute; width: var(--star-size); height: var(--star-size); background: #fff; opacity: .35; clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); animation: documentary-star-drift var(--star-duration) ease-in-out var(--star-delay) infinite alternate; }
 @keyframes documentary-star-drift { from { transform: translate(-8px, 12px) rotate(0deg); opacity: .22; } to { transform: translate(12px, -18px) rotate(35deg); opacity: .55; } }

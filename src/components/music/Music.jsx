@@ -26,7 +26,9 @@ export default function Music() {
         const spins = albums.map(() => 0);
         const outs = albums.map(() => 0);
         const scrollScreens = .3 + (albums.length - 1) * 1.1;
-        section.style.setProperty('--music-scroll-screens', scrollScreens + 1.3);
+        // Hold the final sleeve and spinning disc before the next section overlaps.
+        const finalAlbumHold = 1;
+        section.style.setProperty('--music-scroll-screens', scrollScreens + finalAlbumHold + 1);
         const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
         const render = (time) => {
             const dt = previous ? Math.min(64, time - previous) : 16;

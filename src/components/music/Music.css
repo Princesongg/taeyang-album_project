@@ -1,4 +1,4 @@
-.music { position: relative; height: calc(var(--music-scroll-screens, 4.9) * 100svh); color: #013db9; background: #013db9; }
+.music { position: relative; height: calc(var(--music-scroll-screens, 5.6) * 100svh); color: #013db9; background: #013db9; }
 .music__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; container-type: inline-size; background: #fff; isolation: isolate; }
 .music__stage::after { content: ''; position: absolute; inset: 0; z-index: 200; background: #000; opacity: var(--music-dim, 0); will-change: opacity; pointer-events: none; }
 .music__navigation { position: absolute; z-index: 2; top: 4.375cqw; left: 4.166667cqw; display: flex; align-items: center; gap: 2.604167cqw; font-family: 'Times New Roman', Times, serif; }
