@@ -1,9 +1,0 @@
-.documentary-film { position: relative; height: 310svh; margin-top: -65svh; z-index: 2; background: transparent; }
-.documentary-film__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; pointer-events: none; }
-.documentary-film__window { position: absolute; left: calc(108% - var(--film-enter, 0) * 58%); top: calc(98% - var(--film-enter, 0) * 48%); transform: translate(-50%, -50%); width: calc(24% + var(--film-enter, 0) * 18% + var(--film-zoom, 0) * 58%); height: calc(22% + var(--film-enter, 0) * 14% + var(--film-zoom, 0) * 64%); overflow: hidden; border-top-right-radius: calc(70px * (1 - var(--film-zoom, 0))); border-bottom-left-radius: calc(70px * (1 - var(--film-zoom, 0))); background: #000; pointer-events: auto; }
-.documentary-film__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.documentary-film__player.teaser { position: absolute; inset: 0; height: 100%; opacity: var(--film-fade, 0); pointer-events: none; }
-.documentary-film__player .teaser__stage { position: relative; height: 100%; }
-.documentary-film__player .teaser__controls { pointer-events: auto; }
-@media (max-width: 700px) { .documentary-film__window { width: calc(34% + var(--film-enter, 0) * 44% + var(--film-zoom, 0) * 22%); } }
-@media (prefers-reduced-motion: reduce) { .documentary-film { height: 100svh; margin-top: 0; background: #013db9; } .documentary-film__stage { position: relative; } .documentary-film__player .teaser__stage { aspect-ratio: auto; } }

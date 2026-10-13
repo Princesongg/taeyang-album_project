@@ -1,3 +1,0 @@
-.rotating-model { display: grid; place-items: center; padding-top: 2.458333vw; height: 46.208333vw; box-sizing: border-box; background: #fff; }
-.rotating-model model-viewer { display: block; width: 41.041667vw; height: 43.75vw; --poster-color: transparent; }
-@media (max-width: 700px) { .rotating-model { padding-top: 8px; height: calc(100vw - 32px); } .rotating-model model-viewer { width: 90vw; height: 90vw; } }
