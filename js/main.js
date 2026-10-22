@@ -68,19 +68,16 @@ const heroRef = { current: document.querySelector('.hero') };
                             });
                             return;
                         }
-                        const letters = target.querySelectorAll('.hero__letter');
-                        if (letters.length) {
-                            letters.forEach((letter, index) => {
-                                animations.push(letter.animate([
-                                    { transform: 'translateY(110%)' },
-                                    { transform: 'translateY(0)' },
-                                ], {
-                                    duration: 1500,
-                                    delay: 60 + index * 20,
-                                    easing: 'cubic-bezier(.4, 0, .15, 1)',
-                                    fill: 'backwards',
-                                }));
-                            });
+                        if (target.classList.contains('hero__word')) {
+                            const startX = target.classList.contains('hero__word--first') ? '10vw' : '-10vw';
+                            animations.push(target.animate([
+                                { opacity: 0, translate: `${startX} 0` },
+                                { opacity: 1, translate: '0 0' },
+                            ], {
+                                duration: 1800,
+                                easing: 'cubic-bezier(.22, 1, .36, 1)',
+                                fill: 'backwards',
+                            }));
                         } else {
                             animations.push(target.animate([
                                 { opacity: 0, transform: 'translateY(48px)' },
@@ -107,7 +104,6 @@ const heroRef = { current: document.querySelector('.hero') };
 
 // Concept photos
 (function () {
-const assetPath = '/images/album';
 const photos = [
     { id: 1, x: 1078.8705, y: 952.0845, width: 188, height: 242, angle: 13.04 },
     { id: 2, x: 988.5, y: 308, width: 355, height: 222, angle: 0 },
@@ -259,15 +255,42 @@ const sectionRef = { current: document.querySelector('.tracklist') };
         const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
         const rows = [...sectionRef.current.querySelectorAll('.tracklist__track')];
         const artwork = sectionRef.current.querySelector('.tracklist__artwork');
+        const stage = sectionRef.current.querySelector('.tracklist__stage');
         let cleanup = () => {};
         const setup = () => {
             cleanup();
             if (preference.matches) return;
-            let stopped = false;
-            let next = 0;
-            let busy = false;
-            const visible = new Set();
+            let frame = 0;
+            const stepDistance = 280;
+            const scrollDistance = rows.length * stepDistance;
+            let pinTop = 0;
+            const measure = () => {
+                const stageHeight = stage.getBoundingClientRect().height;
+                pinTop = Math.min(0, window.innerHeight - stageHeight);
+                sectionRef.current.style.height = `${stageHeight + scrollDistance}px`;
+                stage.style.setProperty('--tracklist-pin-top', `${pinTop}px`);
+            };
+            sectionRef.current.classList.add('tracklist--pinned');
+            measure();
             const animations = [];
+            const rowLetters = rows.map(row => [...row.querySelectorAll('.tracklist__letter')]);
+            const updateColors = () => {
+                frame = 0;
+                const distance = pinTop - sectionRef.current.getBoundingClientRect().top;
+                const activeIndex = Math.max(0, Math.min(rows.length - 1, Math.floor(distance / stepDistance)));
+                rows.forEach((row, rowIndex) => {
+                    const color = rowIndex === activeIndex ? '#013db9' : '#989898';
+                    const letters = rowLetters[rowIndex];
+                    letters.forEach(letter => { letter.style.color = color; });
+                    const badge = row.querySelector('.tracklist__badge');
+                    if (badge) badge.style.backgroundColor = color;
+                });
+            };
+            const scheduleColors = () => {
+                if (!frame) frame = requestAnimationFrame(updateColors);
+            };
+            const resizeObserver = new ResizeObserver(() => { measure(); scheduleColors(); });
+            resizeObserver.observe(stage);
             artwork.style.opacity = '0';
             const artworkObserver = new IntersectionObserver(entries => {
                 if (!entries.some(entry => entry.isIntersecting)) return;
@@ -279,46 +302,25 @@ const sectionRef = { current: document.querySelector('.tracklist') };
                 artworkObserver.disconnect();
             }, { threshold: .15 });
             artworkObserver.observe(artwork);
-            rows.forEach(row => row.querySelectorAll('.tracklist__letter, .tracklist__badge').forEach(letter => { letter.style.opacity = '0'; }));
-            const advance = async () => {
-                if (stopped || busy || !visible.has(rows[next])) return;
-                busy = true;
-                const row = rows[next];
-                const letters = [...row.querySelectorAll('.tracklist__letter')];
-                const interval = Math.min(45, 1400 / Math.max(letters.length, 1));
-                const current = letters.map((letter, index) => {
-                    const animation = letter.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 100, delay: index * interval, fill: 'both' });
-                    letter.style.opacity = '';
-                    animations.push(animation);
-                    return animation;
-                });
-                const badge = row.querySelector('.tracklist__badge');
-                if (badge) {
-                    const animation = badge.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 180, delay: letters.length * interval, fill: 'both' });
-                    badge.style.opacity = '';
-                    animations.push(animation);
-                    current.push(animation);
-                }
-                await Promise.all(current.map(animation => animation.finished.catch(() => {})));
-                if (stopped) return;
-                next += 1;
-                busy = false;
-                advance();
-            };
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) { visible.add(entry.target); observer.unobserve(entry.target); }
-                });
-                advance();
-            }, { threshold: .25, rootMargin: '0px 0px -5% 0px' });
-            rows.forEach(row => observer.observe(row));
+            window.addEventListener('scroll', scheduleColors, { passive: true });
+            window.addEventListener('resize', scheduleColors);
+            updateColors();
             cleanup = () => {
-                stopped = true;
-                observer.disconnect();
+                window.removeEventListener('scroll', scheduleColors);
+                window.removeEventListener('resize', scheduleColors);
+                cancelAnimationFrame(frame);
+                resizeObserver.disconnect();
+                sectionRef.current.classList.remove('tracklist--pinned');
+                sectionRef.current.style.height = '';
+                stage.style.removeProperty('--tracklist-pin-top');
                 artworkObserver.disconnect();
                 animations.forEach(animation => animation.cancel());
                 artwork.style.opacity = '';
-                rows.forEach(row => row.querySelectorAll('.tracklist__letter, .tracklist__badge').forEach(letter => { letter.style.opacity = ''; }));
+                rows.forEach(row => {
+                    row.querySelectorAll('.tracklist__letter').forEach(letter => { letter.style.color = ''; });
+                    const badge = row.querySelector('.tracklist__badge');
+                    if (badge) badge.style.backgroundColor = '';
+                });
             };
         };
         setup();
@@ -699,6 +701,35 @@ const ref = { current: document.querySelector('.closing-text') };
         const update = () => { if (preference.matches) show(); };
         preference.addEventListener('change', update);
         return () => { show(); preference.removeEventListener('change', update); };
+})();
+
+// Footer title: fade from faint to solid once it enters the viewport.
+(function () {
+    const title = document.querySelector('.album-footer__title');
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!title || preference.matches) return;
+    let animation;
+    title.style.opacity = '.12';
+    const observer = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        observer.disconnect();
+        animation = title.animate([
+            { opacity: .12 },
+            { opacity: 1 },
+        ], {
+            duration: 1800,
+            easing: 'ease-in-out',
+            fill: 'backwards',
+        });
+        title.style.opacity = '';
+    }, { threshold: .2 });
+    observer.observe(title);
+    preference.addEventListener('change', () => {
+        if (!preference.matches) return;
+        observer.disconnect();
+        animation?.cancel();
+        title.style.opacity = '';
+    });
 })();
 
 // Back to top.

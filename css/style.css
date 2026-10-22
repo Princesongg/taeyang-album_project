@@ -40,6 +40,7 @@ img {
 }
 
 .hero {
+    --hero-content-lift: 12.5cqw;
     container-type: inline-size;
     color: #fff;
     background: #013db9;
@@ -49,13 +50,13 @@ img {
 }
 
 /* Scale the 1920 × 3240 Figma composition with its container. */
-.hero__canvas { position: relative; height: 168.75cqw; }
+.hero__canvas { position: relative; height: calc(168.75cqw - var(--hero-content-lift)); }
 .hero p, .hero h1, .hero h2 { margin: 0; }
 .hero a { color: inherit; text-decoration: none; }
 .hero a:focus-visible { outline: 1px solid currentColor; outline-offset: 6px; }
 .hero__header {
     position: absolute;
-    top: 4.375cqw;
+    top: max(16px, 2.5cqw);
     left: 4.166667cqw;
     display: flex;
     align-items: center;
@@ -72,7 +73,7 @@ img {
 .hero__nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .hero__intro {
     position: absolute;
-    top: 34.375cqw;
+    top: calc(35.416667cqw - var(--hero-content-lift));
     left: 4.166667cqw;
     width: 18.333333cqw;
     display: flex;
@@ -96,11 +97,11 @@ img {
 @media (prefers-reduced-motion: reduce) {
     .hero [data-motion-pending] { visibility: visible; }
 }
-.hero__word--first { top: 33.645833cqw; left: 45.260417cqw; transform: translateX(-50%); }
-.hero__word--last { top: 123.59375cqw; left: 7.395833cqw; }
+.hero__word--first { top: calc(33.645833cqw - var(--hero-content-lift)); left: 45.260417cqw; transform: translateX(-50%); }
+.hero__word--last { top: calc(123.59375cqw - var(--hero-content-lift)); left: 7.395833cqw; }
 .hero__definition {
     position: absolute;
-    top: 87.447917cqw;
+    top: calc(87.447917cqw - var(--hero-content-lift));
     left: 25.364583cqw;
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 400;
@@ -116,6 +117,7 @@ img {
 .hero__meanings p + p { margin-top: 1.822917cqw; }
 
 @media (max-width: 600px) {
+    .hero { --hero-content-lift: 0cqw; }
     .hero__header { right: 4.166667cqw; flex-wrap: wrap; gap: 16px; }
     .hero__brand { width: auto; font-size: 18px; }
     .hero__nav { width: 100%; justify-content: space-between; gap: 8px; font-size: 11px; }
@@ -408,6 +410,8 @@ img {
 }
 
 .tracklist p, .tracklist h2, .tracklist ol { margin: 0; }
+.tracklist__stage { position: relative; min-height: 56.25cqw; background: #fff; }
+.tracklist--pinned .tracklist__stage { position: sticky; top: var(--tracklist-pin-top, 0px); }
 .tracklist a { color: inherit; text-decoration: none; }
 .tracklist a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .tracklist a:focus-visible { outline: 1px solid currentColor; outline-offset: 6px; }
@@ -479,7 +483,8 @@ img {
 }
 
 @media (max-width: 700px) {
-    .tracklist { min-height: auto; padding: 28px 24px 56px; }
+    .tracklist { min-height: auto; }
+    .tracklist__stage { min-height: auto; padding: 28px 24px 56px; box-sizing: border-box; }
     .tracklist__navigation { position: static; flex-wrap: wrap; gap: 18px; }
     .tracklist__brand { width: auto; font-size: 20px; }
     .tracklist__navigation nav { width: 100%; justify-content: space-between; gap: 8px; font-size: 11px; }
@@ -747,8 +752,7 @@ img {
 .album-footer h2 { font-size: 1.354167cqw; font-weight: 400; margin-bottom: 1.5625cqw; }
 .album-footer__details { display: flex; flex-direction: column; gap: .625cqw; font-size: .9375cqw; font-weight: 400; color: rgb(255 255 255 / 60%); }
 .album-footer__details--cs { font-weight: 300; }
-.album-footer__divider { position: relative; height: 10.9375cqw; }
-.album-footer__divider img { position: absolute; left: 0; top: 0; max-width: none; transform-origin: 0 0; transform: rotate(90deg) scale(calc(100vw / 1920px)); }
+.album-footer__divider { align-self: stretch; width: 0; border-left: 1px solid rgb(255 255 255 / 30%); }
 @media (max-width: 700px) { .album-footer { min-height: auto; padding-bottom: 48px; } .album-footer__label { position: static; text-align: right; padding-right: 24px; font-size: 14px; } .album-footer__information { position: static; display: grid; grid-template-columns: 1fr; gap: 28px; margin: 36px 24px 0; } .album-footer h2 { font-size: 16px; margin-bottom: 16px; } .album-footer__details { font-size: 12px; gap: 8px; } .album-footer__divider { display: none; } }
 
 
